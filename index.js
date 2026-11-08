@@ -32,9 +32,9 @@
     field.innerHTML = html;
   }
   buildHearts();
-  var M = 18;
-  var NEAR = 110;
-  var SAFE = 220;
+  var M = 18;            
+  var NEAR = 110;      
+  var SAFE = 220;        
   var done = false;
   var escaped = false;
   var cur = { x: 0, y: 0 };
@@ -42,7 +42,6 @@
   var lastMove = 0;
 
   function viewport() {
-    // FIX 1: missing ||
     return { w: document.documentElement.clientWidth || window.innerWidth, h: window.innerHeight };
   }
   function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
@@ -105,7 +104,6 @@
     lastMove = now;
     if (!escaped) startEscape();
     var p = pickPosition();
-    // FIX 2: reduceMotion was split across two lines
     no.style.setProperty('--fly', reduceMotion ? '0s' : (kind === 'touch' ? '0.6s' : '0.2s'));
     no.style.transform = 'translate(' + p.x + 'px,' + p.y + 'px)';
     no.style.rotate = rand(-10, 10).toFixed(1) + 'deg';
@@ -128,7 +126,6 @@
 
   no.addEventListener('pointerover', function (e) { if (e.pointerType === 'mouse') flee('mouse'); });
   no.addEventListener('pointerdown', function (e) {
-    // FIX 3: missing ||
     if (e.pointerType === 'mouse' || e.pointerType === 'pen') { e.preventDefault(); flee('mouse'); }
   });
   no.addEventListener('touchstart', function (e) {
@@ -138,7 +135,6 @@
   no.addEventListener('touchend', function (e) { e.preventDefault(); }, { passive: false });
   no.addEventListener('click', function (e) { e.preventDefault(); flee('touch'); });
   function onResize() {
-    // FIX 4: missing ||
     if (!escaped || done) return;
     var v = viewport();
     var bw = no.offsetWidth, bh = no.offsetHeight;
@@ -158,7 +154,6 @@
   window.addEventListener('resize', onResize);
   window.addEventListener('orientationchange', function () { setTimeout(onResize, 250); });
   function burst(x, y) {
-    // FIX 5: missing ||
     if (reduceMotion || !Element.prototype.animate) return;
     for (var i = 0; i < 28; i++) {
       var el = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
@@ -193,13 +188,14 @@
     setTimeout(function () {
       actions.hidden = true;
       lead.hidden = true;
-      heading.textContent = 'I knew it, Omnia! ❤️';
+      heading.textContent = 'I knew it, Omnia! ';
       heading.classList.add('swap');
       success.hidden = false;
       card.classList.add('celebrate');
     }, reduceMotion ? 0 : 240);
   }
   yes.addEventListener('click', celebrate);
+
   /* ---------- Rebuild the heart field on a big width change ---------- */
   var lastW = window.innerWidth;
   window.addEventListener('resize', function () {
